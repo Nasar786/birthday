@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Amna!</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a0533 0%, #2d0a5e 40%, #1a0533 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Georgia', serif;
+    overflow: hidden;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card {
+    position: relative;
+    z-index: 10;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 24px;
+    padding: 60px 50px;
+    text-align: center;
+    max-width: 520px;
+    width: 90%;
+    backdrop-filter: blur(12px);
+    animation: fadeIn 1.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .flowers {
+    font-size: 42px;
+    letter-spacing: 8px;
+    margin-bottom: 20px;
+    animation: sway 3s ease-in-out infinite;
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+
+  .happy {
+    font-size: 16px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #f8c8f0;
+    margin-bottom: 8px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 300;
+  }
+
+  .birthday {
+    font-size: 15px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #f8c8f0;
+    margin-bottom: 24px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 300;
+  }
+
+  .name {
+    font-size: 72px;
+    font-style: italic;
+    background: linear-gradient(135deg, #ff9de2, #ffcef7, #ffd700, #ffcef7, #ff9de2);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease infinite;
+    line-height: 1.1;
+    margin-bottom: 30px;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,200,240,0.6), transparent);
+    margin: 0 auto 28px;
+  }
+
+  .message {
+    font-size: 17px;
+    line-height: 1.9;
+    color: rgba(255,255,255,0.85);
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    margin-bottom: 36px;
+  }
+
+  .message span {
+    color: #ffcef7;
+    font-weight: bold;
+  }
+
+  .hearts {
+    font-size: 22px;
+    letter-spacing: 10px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  .from {
+    margin-top: 28px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    font-family: 'Arial', sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<div class="card">
+  <div class="flowers">🌸 🌺 🌸</div>
+  <div class="happy">Happy</div>
+  <div class="birthday">Birthday</div>
+  <div class="name">Amna</div>
+  <div class="divider"></div>
+  <p class="message">
+    On this beautiful day, wishing you<br>
+    all the joy your heart can hold.<br><br>
+    May your life be filled with<br>
+    <span>love, laughter, and endless smiles.</span><br><br>
+    You deserve every happiness<br>
+    today and always. 🌟
+  </p>
+  <div class="hearts">💖 💕 💖</div>
+  <div class="from">with love &amp; warm wishes</div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function Particle() {
+  this.reset = function() {
+    this.x = Math.random() * W;
+    this.y = H + 10;
+    this.size = Math.random() * 6 + 2;
+    this.speedY = -(Math.random() * 2 + 0.5);
+    this.speedX = (Math.random() - 0.5) * 1.2;
+    this.opacity = Math.random() * 0.7 + 0.3;
+    this.color = ['#ff9de2','#ffcef7','#ffd700','#ffffff','#c77dff'][Math.floor(Math.random()*5)];
+    this.shape = Math.random() > 0.5 ? 'circle' : 'star';
+  };
+  this.reset();
+  this.y = Math.random() * H;
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function drawStar(x, y, r, opacity, color) {
+  ctx.save();
+  ctx.globalAlpha = opacity;
+  ctx.fillStyle = color;
+  ctx.translate(x, y);
+  ctx.beginPath();
+  for (let i = 0; i < 5; i++) {
+    ctx.lineTo(Math.cos((18 + i * 72) * Math.PI / 180) * r,
+               -Math.sin((18 + i * 72) * Math.PI / 180) * r);
+    ctx.lineTo(Math.cos((54 + i * 72) * Math.PI / 180) * r * 0.4,
+               -Math.sin((54 + i * 72) * Math.PI / 180) * r * 0.4);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    if (p.y < -10) p.reset();
+    if (p.shape === 'circle') {
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      drawStar(p.x, p.y, p.size, p.opacity, p.color);
+    }
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>
